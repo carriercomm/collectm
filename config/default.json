@@ -9,6 +9,9 @@
 //  "HostnameCase": "default", // "lower", "upper" or "default"
 
   "Interval": 60,
+  "SecurityLevel": 2
+  "Username": "alice",
+  "Password": "12345678",
 
   "HttpConfig": {
     "enable": 1,

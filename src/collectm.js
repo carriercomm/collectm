@@ -85,6 +85,25 @@ function get_interval() {
     return(cfg.has('Interval') ? (cfg.get('Interval') * 1000) : 60000);
 }
 
+function get_security_level() {
+    var securityLevel = cfg.has('SecurityLevel') ? cfg.get('SecurityLevel'): 0;
+    if (securityLevel === 1 && (cfg.get('Username') === "" || cfg.get('Password') === "")) {
+        throw new Error("Securiy level is set to be 1 (signed) while username or password fields are left empty.")
+    }
+    if (securityLevel === 2 && (cfg.get('Username') === "" || cfg.get('Password') === "")) {
+        throw new Error("Securiy level is set to be 2 (encrypted) while username or password fields are left empty.")
+    }
+    return securityLevel;
+}
+
+function get_username() {
+    return cfg.has('Username') ? cfg.get('Username'): "";
+}
+
+function get_password() {
+    return cfg.has('Password') ? cfg.get('Password'): "";
+}
+
 client = new Collectd(get_interval(), get_collectd_servers_and_ports(), 0, get_hostname_with_case());
 
 /* Load the plugins */
