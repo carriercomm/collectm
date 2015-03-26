@@ -1,3 +1,10 @@
+Version 1.5.0
+
+- New plugin "process"
+- API change : Plugin callbacks should return 0 if working.
+- Remove old logs after X days
+- Stop after a user-defined TTL (and Windows Service will restart it) to prevent memory leaks side effects
+
 Version 1.4.0
 
 - Removed dependancy on .Net framework (module node-windows using winser). Now use directly NSSM.

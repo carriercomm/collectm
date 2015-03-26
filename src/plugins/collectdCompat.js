@@ -32,7 +32,11 @@ var perfmonGaugeToPlugin = function(pm, p, pi, t, ti) { // {{{
     // Note : do not use this function if you have more than one pm for the same (p,pi)
     var plugin = client.plugin(p, pi);
     perfmon(pm, function(err, data) {
-        plugin.setGauge(t, ti, data.counters[pm]);
+        if(typeof(data) !== 'undefined' && data.hasOwnProperty('counters') && data.counters.hasOwnProperty(pm)) {
+            plugin.setGauge(t, ti, data.counters[pm]);
+        } else {
+            logger.log('warn', 'What\'s happening ? No counter for '+p+(pi?('-'+pi):'')+'/'+t+(ti?('-'+ti):''));
+        }
     });
 }; // }}}
 
@@ -113,6 +117,8 @@ function refresh_known_disk_letters() { // {{{
     var result;
     var disk;
     var unique_letters = {};
+    var i;
+    var k;
 
     for(i=0; i<known_disks.length; i++) {
         regex = /^PhysicalDisk\((.*)\)\\/;
@@ -123,7 +129,7 @@ function refresh_known_disk_letters() { // {{{
         }
     }
     known_disks_letters = [];
-    for(var k in unique_letters) known_disks_letters.push(k.toLowerCase());
+    for(k in unique_letters) known_disks_letters.push(k.toLowerCase());
 } // }}}
 
 function get_disk() { // {{{
@@ -140,6 +146,7 @@ function get_disk() { // {{{
                 each(data.counters, function (metric, value) {
                     var regex = /^PhysicalDisk\((.*)\)\\(.*)/;
                     var result = metric.match(regex);
+                    var disk;
                     if (result[1] == '_Total') {
                         disk = 'total';
                     } else {
@@ -217,7 +224,7 @@ function get_interface() { // {{{
                 each(data.counters, function (metric, value) {
                     var regex = /^Network Interface\((.*)\)\\(.*)/;
                     var result = metric.match(regex);
-                    interface_name = cu.collectd_sanitize(result[1]);
+                    var interface_name = cu.collectd_sanitize(result[1]);
                     var plugin = client.plugin('interface', interface_name);
                     if (typeof results[interface_name] == 'undefined') {
                         results[interface_name] = [];
@@ -305,7 +312,7 @@ exports.configShow = function() { // {{{
 }; // }}}
 
 exports.reInit = function() { // {{{
-
+    return(0);
 }; // }}}
 
 exports.reloadConfig = function(c) { // {{{
@@ -313,6 +320,7 @@ exports.reloadConfig = function(c) { // {{{
     cfg = c.config;
     counters = c.counters;
     logger = c.logger;
+    return(0);
 }; // }}}
 
 exports.monitor = function () {
