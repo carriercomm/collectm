@@ -42,16 +42,19 @@ FAQ
 Developers
 ==========
 build your own installer :
-* install nsis (http://nsis.sourceforge.net/)
+* install nsis 
 * install node (http://nodejs.org/)
 * install grunt (http://gruntjs.com/ - "npm install -g grunt-cli" should do it)
 * git clone CollectM (git clone...)
 * run :
-```
-cd collectm
-npm install --dev
-grunt distexe
-```
+
+1. install nsis (http://nsis.sourceforge.net/)
+2. install git (http://git-scm.com/downloads)
+3. git clone -s repo
+4. npm install
+5. npm install -g grunt-cli (paei kai kanei install to grunt sto C:\Users\%USERNAME%\AppData\Roaming\npm)
+6. set PATH=%PATH%;C:\Users\%USERNAME%\AppData\Roaming\npm\;C:\Program Files (x86)\NSIS\;
+7. grunt cleanDirs distexe
 
 TODO
 ====
