@@ -12,7 +12,7 @@ module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
     pkg: pkg,
-  clean: ['build/frontend', 'build/plugins', 'build/lib', 'build', pkg.name+'-'+pkg.version+'.exe'],
+  clean: ['build/frontend', 'build/plugins', 'build/lib', 'build/bin', 'build', pkg.name + '-' + pkg.version + '.install.exe'],
   jshint: {
       options: {
         'node': true,
@@ -90,6 +90,7 @@ module.exports = function(grunt) {
   // Default task(s).
   grunt.registerTask('distexe', ['copy:collectm_nsi', 'copy:sources', 'copy:node', 'copy:plugins', 'shell:makensis']);
   grunt.registerTask('test', ['jshint', 'copy:node', 'copy:sources', 'copy:frontend', 'copy:plugins']);
+  grunt.registerTask('cleanDirs', ['clean']);
   grunt.registerTask('default', ['jshint']);
 
 };
