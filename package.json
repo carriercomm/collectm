@@ -1,6 +1,6 @@
 {
   "name": "CollectM",
-  "version": "1.5.1",
+  "version": "1.5.0",
   "author": "Cyril Feraudet",
   "license": "GPLv2",
   "dependencies": {
@@ -13,7 +13,7 @@
     "express": "~4.4.5",
     "process": "~0.7.0",
     "config": ">=1.2.0",
-	"winston": "~0.9.0"
+    "winston": "~0.9.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
@@ -22,8 +22,8 @@
     "grunt-contrib-jshint": "~0.10.0",
     "grunt-shell": "^1.1.1"
   },
-  "repository" :{ 
-	"type" : "git",
-	"url" : "https://github.com/mistio/collectm.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/perfwatcher/collectm.git"
   }
 }
