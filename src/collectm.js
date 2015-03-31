@@ -94,22 +94,31 @@ function get_interval() {
 }
 
 function get_security_level() {
-    var securityLevel = cfg.has('SecurityLevel') ? cfg.get('SecurityLevel'): 0;
-    if (securityLevel === 1 && (cfg.get('Username') === "" || cfg.get('Password') === "")) {
-        throw new Error("Securiy level is set to be 1 (signed) while username or password fields are left empty.")
+    var securityLevel = 0;
+    if (cfg.has('Crypto') && cfg.get('Crypto').SecurityLevel !== undefined) {
+        securityLevel = cfg.get('Crypto').SecurityLevel;
+        if (securityLevel !== 0 && securityLevel !== 1 && securityLevel !== 2) {
+            throw new Error('Security level must be in (0, 1, 2).');
+        }
     }
-    if (securityLevel === 2 && (cfg.get('Username') === "" || cfg.get('Password') === "")) {
-        throw new Error("Securiy level is set to be 2 (encrypted) while username or password fields are left empty.")
+    if ((get_username() === '' || get_password() === '') && securityLevel > 0) {
+        throw new Error('Security level set greater to 0 but username or password left empty.');
     }
     return securityLevel;
 }
 
 function get_username() {
-    return cfg.has('Username') ? cfg.get('Username'): "";
+    if (cfg.has('Crypto') && cfg.get('Crypto').Username !== undefined) {
+        return cfg.get('Crypto').Username;
+    }
+    return '';
 }
 
 function get_password() {
-    return cfg.has('Password') ? cfg.get('Password'): "";
+    if (cfg.has('Crypto') && cfg.get('Crypto').Password !== undefined) {
+        return cfg.get('Crypto').Password;
+    }
+    return '';
 }
 
 function get_collectm_ttl() {
@@ -158,10 +167,10 @@ function remove_old_logs(days) {
     });
 }
 
-
 collectmHostname = get_hostname_with_case();
 logger.log('info', 'Sending metrics to Collectd with hostname '+collectmHostname+' (case sensitive).');
-client = new Collectd(get_interval(), get_collectd_servers_and_ports(), 0, collectmHostname);
+client = new Collectd(get_interval(), get_collectd_servers_and_ports(), 0, collectmHostname,
+                      get_security_level(), get_username(), get_password());
 
 /* Load the plugins */
 pluginsCfg = cfg.has('Plugin') ? cfg.get('Plugin') : [];

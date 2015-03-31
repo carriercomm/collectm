@@ -3,15 +3,19 @@
 // You should edit a file named {hostname}.js or local.js
 // (other possibilities best described in the Node node-config module documentation)
 // You can overwrite some values, including Network.servers.* and HostnameCase
-// 
+//
 {
 //  "Hostname":"orion", // should not be set in default.json
 //  "HostnameCase": "default", // "lower", "upper" or "default"
 
   "Interval": 60,
-  "SecurityLevel": 2
-  "Username": "alice",
-  "Password": "12345678",
+
+// Cryptography/Security settings
+  "Crypto": {
+    "SecurityLevel": 0,
+    "Username": "alice",
+    "Password": "12345678"
+  },
 
 //  Time To Live : will stop Collectm after this value (86400sec = 1 day).
 //  This is useful if you think there is a memory leak and want to reboot periodically
