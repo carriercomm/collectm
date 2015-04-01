@@ -133,13 +133,22 @@ L_file_missing_daemon:
 
     SetOutPath $InstDir\config
     File /oname=default.json-dist config\default.json
+	
+	SetOutPath $InstDir
+    File /oname=package.json package.json
     
     SetOutPath $InstDir\node_modules\body-parser
     File /r /x .git /x .gitignore /x .npmignore node_modules\body-parser\*.*
+	SetOutPath $InstDir\node_modules\buffer
+    File /r /x .git /x .gitignore /x .npmignore node_modules\buffer\*.*
     SetOutPath $InstDir\node_modules\collectdout
     File /r /x .git /x .gitignore /x .npmignore node_modules\collectdout\*.*
+	SetOutPath $InstDir\node_modules\config
+    File /r /x .git /x .gitignore /x .npmignore node_modules\config\*.*
     SetOutPath $InstDir\node_modules\connect-basic-auth
     File /r /x .git /x .gitignore /x .npmignore node_modules\connect-basic-auth\*.*
+	SetOutPath $InstDir\node_modules\crypto-js
+    File /r /x .git /x .gitignore /x .npmignore node_modules\crypto-js\*.*
     SetOutPath $InstDir\node_modules\diskspace
     File /r /x .git /x .gitignore /x .npmignore node_modules\diskspace\*.*
     SetOutPath $InstDir\node_modules\express
@@ -150,8 +159,6 @@ L_file_missing_daemon:
     File /r /x .git /x .gitignore /x .npmignore node_modules\perfmon\*.*
     SetOutPath $InstDir\node_modules\process
     File /r /x .git /x .gitignore /x .npmignore node_modules\process\*.*
-    SetOutPath $InstDir\node_modules\config
-    File /r /x .git /x .gitignore /x .npmignore node_modules\config\*.*
     SetOutPath $InstDir\node_modules\winston
     File /r /x .git /x .gitignore /x .npmignore node_modules\winston\*.*
   
@@ -213,6 +220,7 @@ Section "Uninstall"
   Delete $InstDir\config\default.json-dist
   Delete $InstDir\LICENSE
   Delete $InstDir\uninstall.exe
+  Delete $InstDir\package.json
   RmDir $InstDir\config
   RmDir $InstDir\logs
   RmDir $InstDir
