@@ -72,16 +72,22 @@ function createConfigFile($filePath) {
     $configStr += "  ""HttpConfig"": {`n    ""enable"": 1,`n    ""listenPort"": $listenPort,`n    ""login"": ""$httpAdmin"",`n    ""password"": ""$httpPassword""`n  },`n"
     $configStr += "  ""Network"": {`n    ""servers"":`n    [`n    ]`n"
 
+    $counter = 0
     foreach ($elem in $servers){
         $elems = $elem.Split(":")
         if ($elems.Count -eq 2) {
             if ($($elems[1].Trim()) -match "^[-]?[0-9.]+$") {
-                $configStr = "      {`n        ""hostname"": ""$($elems[0])"",`n        ""port"": $($elems[1])`n      }`n"
+                if (counter -ge 1) {
+                    $configStr = ",`n      {`n        ""hostname"": ""$($elems[0])"",`n        ""port"": $($elems[1])`n      }"
+                } else {
+                    $configStr = "      {`n        ""hostname"": ""$($elems[0])"",`n        ""port"": $($elems[1])`n      }"
+                }
+                $counter++
             }
         }
     }
 
-    $configStr += "  },`n"
+    $configStr += "`n  },`n"
     $configStr += "  ""Plugin"": {`n    ""collectdCompat"": {`n      ""enable"": 1`n    },`n    ""sysconfig"": {`n      ""enable"": 1`n    },`n"
     $configStr += "    ""perfmon"": {`n      ""enable"": 1,`n      ""counters"" : [`n"
     $configStr += "        // This is an example :`n        {`n          ""counter"": ""\\LogicalDisk(C:)\\% Free Space"",`n          ""enable"": 1,`n          ""plugin"": ""perfmon_LogicalDisk"",`n          ""plugin_instance"": ""C"",`n          ""type"": ""percent"",`n          ""type_instance"": ""Free Space""`n        }`n      ]`n    },`n"
