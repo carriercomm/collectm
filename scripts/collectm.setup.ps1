@@ -72,6 +72,7 @@ function createConfigFile($filePath) {
     $configStr += "  ""HttpConfig"": {`n    ""enable"": 1,`n    ""listenPort"": $listenPort,`n    ""login"": ""$httpAdmin"",`n    ""password"": ""$httpPassword""`n  },`n"
     $configStr += "  ""Network"": {`n    ""servers"":`n    [`n"
 
+    ## fix the servers ##
     $counter = 0
     foreach ($elem in $servers){
         $elems = $elem.Split(":")
@@ -174,8 +175,10 @@ if ($SETUP_DEV_ENV -eq $false) {
             Exit
         }
     }
+    ## update the config file ##
     createConfigFile -filePath "$installDir\default.json"
     Write-Host "Created config file in $installDir\default.json"
+    ## restart the CollectM service ##
     Start-Process "$installDir\..\bin\nssm.exe" -ArgumentList "restart $svcName"
     Write-Host "Restarted CollectM service to load new config file"
 }
