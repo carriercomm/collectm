@@ -41,7 +41,11 @@ Param(
 	[string]$httpPassword="admin",
 
     [Parameter(Mandatory=$false)]
-	[int32]$listenPort=25826
+	[int32]$listenPort=25826,
+
+    [Parameter(Mandatory=$false)]
+    [ValidateNotNullOrEmpty()]
+	[string]$svcName="CollectM"
 )
 
 function createConfigFile($filePath) {
@@ -71,10 +75,9 @@ function createConfigFile($filePath) {
     $configStr += "        ""My NSSM for Collectm"": {`n          ""plugin"": ""process"",`n          ""instance"": ""nssm"",`n          ""commandline"": "".*collectm.*nssm\\.exe.*""`n        }`n      }`n    }`n  }`n"
     $configStr += "}"
 
+    ## Output String to File and make sure that the file is UTF 8 w/o BOM ##
     $Utf8NoBomEncoding = New-Object System.Text.UTF8Encoding($False)
     [System.IO.File]::WriteAllLines($filePath, $configStr, $Utf8NoBomEncoding)
-
-    #Out-File -FilePath $filePath -InputObject $configStr -Encoding utf8
 
 }
 
@@ -97,29 +100,6 @@ function updatePath($newPath) {
 	$NewPath = "$OldPath;$newPath"
 	Set-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment" -Name PATH –Value $newPath
 	Return $NewPath
-}
-
-function downloadFile($url, $filePath) {
-	Write-Host "Downloading file: $url"
-	Try {
-		#$proxy = [System.Net.WebRequest]::GetSystemWebProxy()
-		#$proxy.Credentials = [System.Net.CredentialCache]::DefaultCredentials
-		## Instantiate a WebClient Object from the .Net classes ##
-		$request = New-Object System.Net.Webclient
-		$request.UseDefaultCredentials = $true
-		## credentials for the proxy
-		$request.Proxy.Credentials = [System.Net.CredentialCache]::DefaultNetworkCredentials
-		#$request.Proxy.Credentials = $request.Credentials
-		## Call the method to download file and save it to filePath ##
-		$request.DownloadFile($url, $filePath)
-		Write-Host "Download Finished" 
-	}
-	Catch [System.Net.WebException], [System.IO.IOException]  {
-		## If there's an error send a message to the console ##
-		Write-Host "Nothing to download: (404)"
-		## Exit gracefully ##
-		Exit
-	}
 }
 
 function downloadFileWithProgress($url, $filePath) {
@@ -176,6 +156,8 @@ if ($SETUP_DEV_ENV -eq $false) {
     }
     createConfigFile -filePath "$installDir\default.json"
     Write-Host "Created config file in $installDir\default.json"
+    Start-Process "$installDir\..\bin\nssm.exe" -ArgumentList "restart $svcName"
+    Write-Host "Restarted CollectM service to load new config file"
 }
 else {
 
@@ -243,4 +225,3 @@ else {
 }
 Set-Location $workingDirectory
 Write-Host "Done"
-#. powershell.exe -command ".\mist.setup.ps1  -username ""cc635625e3aaf6d2021e6ab781dc86cb"" -password ""12345678"" -COMPLETE_BUILD"
