@@ -45,7 +45,10 @@ Param(
 
     [Parameter(Mandatory=$false)]
     [ValidateNotNullOrEmpty()]
-	[string]$svcName="CollectM"
+	[string]$svcName="CollectM",
+
+    [Parameter(Mandatory=$false)]
+    [string[]]$servers=@("localhost:25826")
 )
 
 function createConfigFile($filePath) {
@@ -67,7 +70,18 @@ function createConfigFile($filePath) {
     $configStr += 
     $congigStr += "  ""LogDeletionDays"": $logDeletionDays,`n"
     $configStr += "  ""HttpConfig"": {`n    ""enable"": 1,`n    ""listenPort"": $listenPort,`n    ""login"": ""$httpAdmin"",`n    ""password"": ""$httpPassword""`n  },`n"
-    $configStr += "  ""Network"": {`n    ""servers"":`n    [`n      {`n        ""hostname"": ""null.mist.io"",`n        ""port"": 25826`n      }`n    ]`n  },`n"
+    $configStr += "  ""Network"": {`n    ""servers"":`n    [`n    ]`n"
+
+    foreach ($elem in $servers){
+        $elems = $elem.Split(":")
+        if ($elems.Count -eq 2) {
+            if ($($elems[1].Trim()) -match "^[-]?[0-9.]+$") {
+                $configStr = "      {`n        ""hostname"": ""$($elems[0])"",`n        ""port"": $($elems[1])`n      }`n"
+            }
+        }
+    }
+
+    $configStr += "  },`n"
     $configStr += "  ""Plugin"": {`n    ""collectdCompat"": {`n      ""enable"": 1`n    },`n    ""sysconfig"": {`n      ""enable"": 1`n    },`n"
     $configStr += "    ""perfmon"": {`n      ""enable"": 1,`n      ""counters"" : [`n"
     $configStr += "        // This is an example :`n        {`n          ""counter"": ""\\LogicalDisk(C:)\\% Free Space"",`n          ""enable"": 1,`n          ""plugin"": ""perfmon_LogicalDisk"",`n          ""plugin_instance"": ""C"",`n          ""type"": ""percent"",`n          ""type_instance"": ""Free Space""`n        }`n      ]`n    },`n"
