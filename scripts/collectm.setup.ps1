@@ -70,7 +70,7 @@ function createConfigFile($filePath) {
     $configStr += 
     $congigStr += "  ""LogDeletionDays"": $logDeletionDays,`n"
     $configStr += "  ""HttpConfig"": {`n    ""enable"": 1,`n    ""listenPort"": $listenPort,`n    ""login"": ""$httpAdmin"",`n    ""password"": ""$httpPassword""`n  },`n"
-    $configStr += "  ""Network"": {`n    ""servers"":`n    [`n    ]`n"
+    $configStr += "  ""Network"": {`n    ""servers"":`n    [`n"
 
     $counter = 0
     foreach ($elem in $servers){
@@ -87,7 +87,7 @@ function createConfigFile($filePath) {
         }
     }
 
-    $configStr += "`n  },`n"
+    $configStr += "`n    ]`n  },`n"
     $configStr += "  ""Plugin"": {`n    ""collectdCompat"": {`n      ""enable"": 1`n    },`n    ""sysconfig"": {`n      ""enable"": 1`n    },`n"
     $configStr += "    ""perfmon"": {`n      ""enable"": 1,`n      ""counters"" : [`n"
     $configStr += "        // This is an example :`n        {`n          ""counter"": ""\\LogicalDisk(C:)\\% Free Space"",`n          ""enable"": 1,`n          ""plugin"": ""perfmon_LogicalDisk"",`n          ""plugin_instance"": ""C"",`n          ""type"": ""percent"",`n          ""type_instance"": ""Free Space""`n        }`n      ]`n    },`n"
