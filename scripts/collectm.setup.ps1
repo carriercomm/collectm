@@ -78,9 +78,9 @@ function createConfigFile($filePath) {
         if ($elems.Count -eq 2) {
             if ($($elems[1].Trim()) -match "^[-]?[0-9.]+$") {
                 if (counter -ge 1) {
-                    $configStr = ",`n      {`n        ""hostname"": ""$($elems[0])"",`n        ""port"": $($elems[1])`n      }"
+                    $configStr += ",`n      {`n        ""hostname"": ""$($elems[0])"",`n        ""port"": $($elems[1])`n      }"
                 } else {
-                    $configStr = "      {`n        ""hostname"": ""$($elems[0])"",`n        ""port"": $($elems[1])`n      }"
+                    $configStr += "      {`n        ""hostname"": ""$($elems[0])"",`n        ""port"": $($elems[1])`n      }"
                 }
                 $counter++
             }
