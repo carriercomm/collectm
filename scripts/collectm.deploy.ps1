@@ -51,12 +51,12 @@ Start-Process $installerPath -ArgumentList "/S" -Wait
 Write-Host "Installed CollectM agent"
 if ($SetupConfigFile -eq $true) {
     $installationDir = "C:\Program Files\CollectM"
-    if ((Test-Path $installDir) -eq $false) {
+    if ((Test-Path $installationDir) -eq $false) {
         $installDir = "C:\Program Files (x86)\CollectM"
-        if ((Test-Path $installDir) -eq $false) {
+        if ((Test-Path $installationDir) -eq $false) {
             Write-Host "could not locate installation directory of CollectM"
             Exit
         }
     }
-    .\collectm.config.ps1 -filePath "$installDir\config\default.json" -restartService -svcPath "$installDir\bin\nssm.exe" -username $username -password $password -hostNameCase $hostNameCase -interval $interval -timeUntilRestart $timeUntilRestart -logDeletionDays $logDeletionDays -httpAdmin $httpAdmin -httpPassword $httpPassword -listenPort $listenPort -servers @("localhost:25826")
+    .\collectm.config.ps1 -filePath "$installationDir\config\default.json" -restartService -svcPath "$installationDir\bin\nssm.exe" -username $username -password $password -hostNameCase $hostNameCase -interval $interval -timeUntilRestart $timeUntilRestart -logDeletionDays $logDeletionDays -httpAdmin $httpAdmin -httpPassword $httpPassword -listenPort $listenPort -servers @("localhost:25826")
 }
