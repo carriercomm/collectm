@@ -37,7 +37,7 @@ Use your browser to go to http://localhost:25826/ (login: admin / password: admi
 
 FAQ
 ===
-* Which Windows version are suported ? It was only tested on Windows 2008, don't know for other version.
+* Which Windows version are suported ? It was tested on Windows 2008 R2, Windows 2012 and Windows 8/8.1.
 
 Developers
 ==========
