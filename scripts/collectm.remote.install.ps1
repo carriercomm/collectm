@@ -67,8 +67,10 @@ function downloadFile($url, $filePath) {
     $count = $responseStream.Read($buffer,0,$buffer.length)
     $downloadedBytes = $count
     $iterations = 0
+    $startLeft = [Console]::CursorLeft
+    $startTop = [Console]::CursorTop
     while ($count -gt 0) {
-        [System.Console]::CursorLeft = 0
+        [Console]::SetCursorPosition($startLeft, $startTop)
         $targetStream.Write($buffer, 0, $count)
         $count = $responseStream.Read($buffer,0,$buffer.length)
         $downloadedBytes = $downloadedBytes + $count
@@ -89,11 +91,11 @@ if ($SetupConfigFile -eq $true -and (!$username -or !$password)) {
     Exit
  }
 
-$collectmDownloadUrl = $collectMRepo + "/" + $gitBranch + "/releases/" + $installerName
+$collectmDownloadUrl = $collectMRepo + "/blob/" + $gitBranch + "/releases/" + $installerName + "?raw=true"
 
-$collectmDeployScriptUrl = $collectMRepo + "/" + $gitBranch + "/scripts/collectm.deploy.ps1"
+$collectmDeployScriptUrl = $collectMRepo + "/blob/" + $gitBranch + "/scripts/collectm.deploy.ps1?raw=true"
 
-$collectmConfigScriptUrl = $collectMRepo + "/" + $gitBranch + "/scripts/collectm.config.ps1"
+$collectmConfigScriptUrl = $collectMRepo + "/blob/" + $gitBranch + "/scripts/collectm.config.ps1?raw=true"
 
 $installerPath = "collectm.installer.exe"
 

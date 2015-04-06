@@ -1,11 +1,11 @@
 [CmdletBinding()]
 Param(
 
-    [Parameter(Mandatory=$false)]
+    [Parameter(Mandatory=$true)]
     [ValidateNotNullOrEmpty()]
     [string]$url,
 
-    [Parameter(Mandatory=$false)]
+    [Parameter(Mandatory=$true)]
     [ValidateNotNullOrEmpty()]
     [string]$filePath
 
@@ -24,8 +24,10 @@ $buffer = New-Object byte[] 10KB
 $count = $responseStream.Read($buffer,0,$buffer.length)
 $downloadedBytes = $count
 $iterations = 0
+$startLeft = [Console]::CursorLeft
+$startTop = [Console]::CursorTop
 while ($count -gt 0) {
-    [System.Console]::CursorLeft = 0
+    [Console]::SetCursorPosition($startLeft, $startTop)
     $targetStream.Write($buffer, 0, $count)
     $count = $responseStream.Read($buffer,0,$buffer.length)
     $downloadedBytes = $downloadedBytes + $count
