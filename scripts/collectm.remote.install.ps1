@@ -111,4 +111,8 @@ Write-Host "Downloading Collectm config script"
 
 downloadFile -url $collectmConfigScriptUrl -filePath "collectm.config.ps1"
 
-.\collectm.deploy.ps1 -installerPath $installerPath -SetupConfigFile $SetupConfigFile -username $username -password $password -hostNameCase $hostNameCase -interval $interval -timeUntilRestart $timeUntilRestart -logDeletionDays $logDeletionDays -httpAdmin $httpAdmin -httpPassword $httpPassword -listenPort $listenPort -svcName $svcName -servers $servers
+if ($SetupConfigFile -eq $true) {
+    .\collectm.deploy.ps1 -installerPath $installerPath -SetupConfigFile -username $username -password $password -hostNameCase $hostNameCase -interval $interval -timeUntilRestart $timeUntilRestart -logDeletionDays $logDeletionDays -httpAdmin $httpAdmin -httpPassword $httpPassword -listenPort $listenPort -svcName $svcName -servers $servers
+} else {
+    .\collectm.deploy.ps1 -installerPath $installerPath -username $username -password $password -hostNameCase $hostNameCase -interval $interval -timeUntilRestart $timeUntilRestart -logDeletionDays $logDeletionDays -httpAdmin $httpAdmin -httpPassword $httpPassword -listenPort $listenPort -svcName $svcName -servers $servers
+}
