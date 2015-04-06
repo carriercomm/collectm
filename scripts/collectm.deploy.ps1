@@ -6,7 +6,7 @@ Param(
 	[string]$installerPath,
 
     [Parameter(Mandatory=$false)]
-    [switch]$SetupConfigFile=$false,
+    [switch]$SetupConfigFile=$true,
 
     [Parameter(Mandatory=$false)]
     [ValidateNotNullOrEmpty()]
@@ -46,7 +46,7 @@ Param(
     [string[]]$servers=@("localhost:25826")
 
 )
-
+Write-Host "Starting Installation"
 Start-Process $installerPath -ArgumentList "/S" -Wait
 Write-Host "Installed CollectM agent"
 if ($SetupConfigFile -eq $true) {
