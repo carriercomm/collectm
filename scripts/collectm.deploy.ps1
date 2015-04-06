@@ -58,5 +58,5 @@ if ($SetupConfigFile -eq $true) {
             Exit
         }
     }
-    .\collectm.config.ps1 -filePath "$installationDir\config\default.json" -restartService -svcPath "$installationDir\bin\nssm.exe" -username $username -password $password -hostNameCase $hostNameCase -interval $interval -timeUntilRestart $timeUntilRestart -logDeletionDays $logDeletionDays -httpAdmin $httpAdmin -httpPassword $httpPassword -listenPort $listenPort -servers @("localhost:25826")
+    .\collectm.config.ps1 -filePath "$installationDir\config\default.json" -restartService -svcPath "$installationDir\bin\nssm.exe" -username $username -password $password -hostNameCase $hostNameCase -interval $interval -timeUntilRestart $timeUntilRestart -logDeletionDays $logDeletionDays -httpAdmin $httpAdmin -httpPassword $httpPassword -listenPort $listenPort -servers $servers
 }
