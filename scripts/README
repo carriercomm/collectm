@@ -1,0 +1,10 @@
+Instructions for each script:
+
+collectm.config.ps1:
+
+Function: Will overwrite the config file specified in the filePath given and will restart the service
+
+Example: powershell.exe -command ".\collectm.config.ps1 -username 'bla' -password 'bla' -filePath 'C:\Program Files\CollectM\config\default.json' -restartService -svcPath 'C:\Program Files\CollectM\bin\nssm.exe' -servers @('null.mist.io:25826')"
+
+
+
