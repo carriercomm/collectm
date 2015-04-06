@@ -43,7 +43,11 @@ Param(
 	[string]$svcName="CollectM",
 
     [Parameter(Mandatory=$false)]
-    [string[]]$servers=@("localhost:25826")
+    [string[]]$servers=@("localhost:25826"),
+    
+    [Parameter(Mandatory=$false)]
+    [ValidateSet("", "default", "lower", "upper")]
+	[string]$hostNameCase=""
 )
 
 if($restartService -eq $true -and !$svcPath) {
