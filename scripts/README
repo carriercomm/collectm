@@ -4,7 +4,20 @@ collectm.config.ps1:
 
 Function: Will overwrite the config file specified in the filePath given and will restart the service
 
-Example: powershell.exe -command ".\collectm.config.ps1 -username 'bla' -password 'bla' -filePath 'C:\Program Files\CollectM\config\default.json' -restartService -svcPath 'C:\Program Files\CollectM\bin\nssm.exe' -servers @('null.mist.io:25826')"
+Example: powershell.exe -command ".\collectm.config.ps1 -username 'bla' -password 'blabla' -filePath 'C:\Program Files\CollectM\config\default.json' -restartService -svcPath 'C:\Program Files\CollectM\bin\nssm.exe' -servers @('null.mist.io:25826')"
 
-
+Flags:	filePath -> path to the configuration file,
+		username -> username for the encryption,
+		password -> password for the encryption,
+		restartService -> if set will restart the service,
+		svcPath -> path to the service to be restarted, if the restartService has been set this is mandatory,
+		interval -> interval between measurements,
+		timeUntilRestart -> seconds until the CollectM service is restarted,
+		logDeletionDelays -> number of days when logs will be deleted,
+		httpAdmin -> name to access web UI,
+		httpPassword -> password to access web UI,
+		listenPort -> collectM port(default 25826),
+		svcName -> name of service,
+		servers -> an array of the servers that the service will send data to,
+		hostNameCase -> one of "" , "DEFAULT", "UPPER", "LOWER"
 
