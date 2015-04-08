@@ -7,9 +7,20 @@ Param(
 
     [Parameter(Mandatory=$true)]
     [ValidateNotNullOrEmpty()]
-    [string]$filePath
+    [string]$filePath,
+
+    [Parameter(Mandatory=$false)]
+    [switch]$runScript=$false,
+
+    [Parameter(Mandatory=$false)]
+    [string]$args
 
 )
+
+if ($runScript -eq $true -and !$args) {
+    Write-Host "You want the script to run but you didn't provide any arguments!"
+    Exit
+}
 
 "Downloading $url"
 $uri = New-Object "System.Uri" "$url"
@@ -41,3 +52,8 @@ $targetStream.Flush()
 $targetStream.Close()
 $targetStream.Dispose()
 $responseStream.Dispose()
+
+if ($runScript -eq $true) {
+    Write-Host "Running: .\collectm.remote.install.ps1 $args"
+    Invoke-Expression ".\collectm.remote.install.ps1 $args"
+}
