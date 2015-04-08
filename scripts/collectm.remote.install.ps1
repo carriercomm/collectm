@@ -71,7 +71,7 @@ $installerPath = "collectm.installer.exe"
 
 Write-Host "Downloading CollectM download script"
 
-downloadFile -url $collectmDownloadUrl -filePath ".\collectm.download.ps1"
+downloadFile -url $collectmDownloadScriptUrl -filePath ".\collectm.download.ps1"
 
 Write-Host "Downloading CollectM installer"
 
