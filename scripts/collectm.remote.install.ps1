@@ -86,7 +86,9 @@ Write-Host "Downloading Collectm config script"
 Invoke-Expression ".\collectm.download.ps1 -url $collectmConfigScriptUrl -filePath 'collectm.config.ps1'"
 
 if ($SetupConfigFile -eq $true) {
+    Write-Host "Running: .\collectm.deploy.ps1 -installerPath ""$installerPath"" -SetupConfigFile -configArgs $setupArgs"
     Invoke-Expression ".\collectm.deploy.ps1 -installerPath ""$installerPath"" -SetupConfigFile -configArgs $setupArgs"
 } else {
+    Write-Host "Running: .\collectm.deploy.ps1 -installerPath ""$installerPath"""
     Invoke-Expression ".\collectm.deploy.ps1 -installerPath ""$installerPath"""
 }
