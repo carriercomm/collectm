@@ -69,19 +69,19 @@ $collectmDownloadScriptUrl = $collectMRepo + "/blob/" + $gitBranch + "/scripts/c
 
 $installerPath = "collectm.installer.exe"
 
-Write-Host "Downloading CollectM download script"
+Write-Host "Downloading CollectM download script in url: $collectmDownloadScriptUrl"
 
 downloadFile -url $collectmDownloadScriptUrl -filePath ".\collectm.download.ps1"
 
-Write-Host "Downloading CollectM installer"
+Write-Host "Downloading CollectM installer in url: $collectmDownloadUrl"
 
 Invoke-Expression ".\collectm.download.ps1 -url $collectmDownloadUrl -filePath $installerPath"
 
-Write-Host "Downloading CollectM deploy script"
+Write-Host "Downloading CollectM deploy script in url: $collectmDeployScriptUrl"
 
 Invoke-Expression ".\collectm.download.ps1 -url $collectmDeployScriptUrl -filePath 'collectm.deploy.ps1'"
 
-Write-Host "Downloading Collectm config script"
+Write-Host "Downloading Collectm config script in url: $collectmConfigScriptUrl"
 
 Invoke-Expression ".\collectm.download.ps1 -url $collectmConfigScriptUrl -filePath 'collectm.config.ps1'"
 
