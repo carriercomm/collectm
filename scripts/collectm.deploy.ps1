@@ -12,7 +12,7 @@ Param(
 	[string]$configArgs=""
 
 )
-Write-Host "Starting Installation"
+
 Start-Process $installerPath -ArgumentList "/S" -Wait
 Write-Host "Installed CollectM agent"
 if ($SetupConfigFile -eq $true) {
@@ -24,5 +24,6 @@ if ($SetupConfigFile -eq $true) {
             Exit
         }
     }
+    Write-Host "Running: .\collectm.config.ps1 -filePath ""$installationDir\config\default.json"" $configArgs"
     Invoke-Expression ".\collectm.config.ps1 -filePath ""$installationDir\config\default.json"" $configArgs"
 }

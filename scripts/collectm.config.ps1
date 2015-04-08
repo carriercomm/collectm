@@ -49,8 +49,6 @@ Param(
 	[string]$hostNameCase=""
 )
 
-$filePath = ".\default.json"
-
 if($restartService -eq $true -and !$svcPath) {
     Write-Host "You did not give the path to the location of the nssm. Exiting!"
     Exit
