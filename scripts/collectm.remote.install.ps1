@@ -17,39 +17,7 @@ Param(
     [switch]$SetupConfigFile=$false,
 
     [Parameter(Mandatory=$false)]
-	[string]$username,
-
-	[Parameter(Mandatory=$false)]
-	[string]$password,
-
-    [Parameter(Mandatory=$false)]
-    [ValidateSet("", "default", "lower", "upper")]
-	[string]$hostNameCase="",
-
-    [Parameter(Mandatory=$false)]
-	[int32]$interval=5,
-
-    [Parameter(Mandatory=$false)]
-	[int32]$timeUntilRestart=-1,
-
-    [Parameter(Mandatory=$false)]
-	[int32]$logDeletionDays=30,
-
-    [Parameter(Mandatory=$false)]
-	[string]$httpAdmin="admin",
-
-    [Parameter(Mandatory=$false)]
-	[string]$httpPassword="admin",
-
-    [Parameter(Mandatory=$false)]
-	[int32]$listenPort=25826,
-
-    [Parameter(Mandatory=$false)]
-    [ValidateNotNullOrEmpty()]
-	[string]$svcName="CollectM",
-
-    [Parameter(Mandatory=$false)]
-    [string[]]$servers=@("localhost:25826")
+	[string]$setupArgs
 
 )
 
@@ -86,8 +54,8 @@ function downloadFile($url, $filePath) {
     $responseStream.Dispose()
 }
 
-if ($SetupConfigFile -eq $true -and (!$username -or !$password)) {
-    Write-Host "You want the config file to be updated but you didn't give username or password"
+if ($SetupConfigFile -eq $true -and !$setupArgs) {
+    Write-Host "You want the config file to be updated but you didn't give any arguments for the collectm.config script!"
     Exit
  }
 
@@ -97,22 +65,28 @@ $collectmDeployScriptUrl = $collectMRepo + "/blob/" + $gitBranch + "/scripts/col
 
 $collectmConfigScriptUrl = $collectMRepo + "/blob/" + $gitBranch + "/scripts/collectm.config.ps1?raw=true"
 
+$collectmDownloadScriptUrl = $collectMRepo + "/blob/" + $gitBranch + "/scripts/collectm.download.ps1?raw=true"
+
 $installerPath = "collectm.installer.exe"
+
+Write-Host "Downloading CollectM download script"
+
+downloadFile -url $collectmDownloadUrl -filePath ".\collectm.download.ps1"
 
 Write-Host "Downloading CollectM installer"
 
-downloadFile -url $collectmDownloadUrl -filePath $installerPath
+Invoke-Expression ".\collectm.download.ps1 -url $collectmDownloadUrl -filePath $installerPath"
 
 Write-Host "Downloading CollectM deploy script"
 
-downloadFile -url $collectmDeployScriptUrl -filePath "collectm.deploy.ps1"
+Invoke-Expression ".\collectm.download.ps1 -url $collectmDeployScriptUrl -filePath 'collectm.deploy.ps1'"
 
 Write-Host "Downloading Collectm config script"
 
-downloadFile -url $collectmConfigScriptUrl -filePath "collectm.config.ps1"
+Invoke-Expression ".\collectm.download.ps1 -url $collectmConfigScriptUrl -filePath 'collectm.config.ps1'"
 
 if ($SetupConfigFile -eq $true) {
-    .\collectm.deploy.ps1 -installerPath $installerPath -SetupConfigFile -username $username -password $password -hostNameCase $hostNameCase -interval $interval -timeUntilRestart $timeUntilRestart -logDeletionDays $logDeletionDays -httpAdmin $httpAdmin -httpPassword $httpPassword -listenPort $listenPort -svcName $svcName -servers $servers
+    Invoke-Expression ".\collectm.deploy.ps1 -installerPath ""$installerPath"" -SetupConfigFile -configArgs $setupArgs"
 } else {
-    .\collectm.deploy.ps1 -installerPath $installerPath -username $username -password $password -hostNameCase $hostNameCase -interval $interval -timeUntilRestart $timeUntilRestart -logDeletionDays $logDeletionDays -httpAdmin $httpAdmin -httpPassword $httpPassword -listenPort $listenPort -svcName $svcName -servers $servers
+    Invoke-Expression ".\collectm.deploy.ps1 -installerPath ""$installerPath"""
 }
