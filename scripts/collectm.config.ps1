@@ -102,9 +102,7 @@ foreach ($elem in $servers){
 }
 
 $configStr += "`n    ]`n  },`n"
-$configStr += "  ""Plugin"": {`n    ""collectdCompat"": {`n      ""enable"": 1`n    },`n    ""sysconfig"": {`n      ""enable"": 1`n    },`n"
-$configStr += "    ""perfmon"": {`n      ""enable"": 1,`n      ""counters"" : [`n"
-$configStr += "        // This is an example :`n        {`n          ""counter"": ""\\LogicalDisk(C:)\\% Free Space"",`n          ""enable"": 1,`n          ""plugin"": ""perfmon_LogicalDisk"",`n          ""plugin_instance"": ""C"",`n          ""type"": ""percent"",`n          ""type_instance"": ""Free Space""`n        }`n      ]`n    }`n  }`n"
+$configStr += "  ""Plugin"": {`n    ""collectdCompat"": {`n      ""enable"": 1`n    }`n  }`n"
 $configStr += "}"
 
 ## Output String to File and make sure that the file is UTF 8 w/o BOM ##
