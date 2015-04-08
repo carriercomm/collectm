@@ -16,8 +16,7 @@ Param(
     [Parameter(Mandatory=$false)]
     [switch]$restartService=$false,
 
-    [Parameter(Mandatory=$true)]
-    [ValidateNotNullOrEmpty()]
+    [Parameter(Mandatory=$false)]
     [string]$svcPath,
 
     [Parameter(Mandatory=$false)]
@@ -50,9 +49,17 @@ Param(
 	[string]$hostNameCase=""
 )
 
+$filePath = ".\default.json"
+
 if($restartService -eq $true -and !$svcPath) {
-    Write-Host "You did not give the path to the configuration file. Exiting!"
+    Write-Host "You did not give the path to the location of the nssm. Exiting!"
     Exit
+}
+
+if (![System.IO.Path]::IsPathRooted($filePath)) {
+    Write-Host "$filePath is not absolute"
+    $filePath = (Convert-Path ".") + "\" + $filePath
+    Write-Host "New path is $filePath"
 }
 
 if ((Test-Path $filePath) -eq $true) {
@@ -99,14 +106,12 @@ foreach ($elem in $servers){
 $configStr += "`n    ]`n  },`n"
 $configStr += "  ""Plugin"": {`n    ""collectdCompat"": {`n      ""enable"": 1`n    },`n    ""sysconfig"": {`n      ""enable"": 1`n    },`n"
 $configStr += "    ""perfmon"": {`n      ""enable"": 1,`n      ""counters"" : [`n"
-$configStr += "        // This is an example :`n        {`n          ""counter"": ""\\LogicalDisk(C:)\\% Free Space"",`n          ""enable"": 1,`n          ""plugin"": ""perfmon_LogicalDisk"",`n          ""plugin_instance"": ""C"",`n          ""type"": ""percent"",`n          ""type_instance"": ""Free Space""`n        }`n      ]`n    },`n"
-$configStr += "    ""process"": {`n      ""enable"": 1,`n      ""process"": {`n        // The key is not used in Collectm. It only helps for config overwrite in local.json`n        // The value is an array with ""plugin"", ""instance"" and ""commandline"".`n        // This is an example :`n        ""My Collectm"": {`n          ""plugin"": ""process"",`n          ""instance"": ""collectm"",`n          ""commandline"": "".*node.*collectm\\.js.*""`n        },`n"
-$configStr += "        ""My NSSM for Collectm"": {`n          ""plugin"": ""process"",`n          ""instance"": ""nssm"",`n          ""commandline"": "".*collectm.*nssm\\.exe.*""`n        }`n      }`n    }`n  }`n"
+$configStr += "        // This is an example :`n        {`n          ""counter"": ""\\LogicalDisk(C:)\\% Free Space"",`n          ""enable"": 1,`n          ""plugin"": ""perfmon_LogicalDisk"",`n          ""plugin_instance"": ""C"",`n          ""type"": ""percent"",`n          ""type_instance"": ""Free Space""`n        }`n      ]`n    }`n  }`n"
 $configStr += "}"
 
 ## Output String to File and make sure that the file is UTF 8 w/o BOM ##
 $Utf8NoBomEncoding = New-Object System.Text.UTF8Encoding($false)
-[System.IO.File]::WriteAllLines($filePath, $configStr, $Utf8NoBomEncoding)
+[System.IO.File]::WriteAllText($filePath, $configStr, $Utf8NoBomEncoding)
 
 Write-Host "Updated CollectM configuration file"
 
