@@ -79,11 +79,11 @@ Invoke-Expression ".\collectm.download.ps1 -url $collectmDownloadUrl -filePath $
 
 Write-Host "Downloading CollectM deploy script: .\collectm.download.ps1 -url ""$collectmDeployScriptUrl"" -filePath 'collectm.deploy.ps1'"
 
-#Invoke-Expression ".\collectm.download.ps1 -url ""$collectmDeployScriptUrl"" -filePath 'collectm.deploy.ps1'"
+Invoke-Expression ".\collectm.download.ps1 -url ""$collectmDeployScriptUrl"" -filePath 'collectm.deploy.ps1'"
 
 Write-Host "Downloading Collectm config script: .\collectm.download.ps1 -url ""$collectmConfigScriptUrl"" -filePath 'collectm.config.ps1'"
 
-#Invoke-Expression ".\collectm.download.ps1 -url ""$collectmConfigScriptUrl"" -filePath 'collectm.config.ps1'"
+Invoke-Expression ".\collectm.download.ps1 -url ""$collectmConfigScriptUrl"" -filePath 'collectm.config.ps1'"
 
 if ($SetupConfigFile -eq $true) {
     $temp = ".\collectm.deploy.ps1 -installerPath ""$installerPath"" -SetupConfigFile -configArgs '" + $setupArgs + "'"
