@@ -7,13 +7,7 @@ Param(
 
     [Parameter(Mandatory=$true)]
     [ValidateNotNullOrEmpty()]
-    [string]$filePath,
-
-    [Parameter(Mandatory=$false)]
-    [switch]$runScript=$false,
-
-    [Parameter(Mandatory=$false)]
-    [string]$args
+    [string]$filePath
 
 )
 
@@ -52,8 +46,3 @@ $targetStream.Flush()
 $targetStream.Close()
 $targetStream.Dispose()
 $responseStream.Dispose()
-
-if ($runScript -eq $true) {
-    Write-Host "Running: .\collectm.remote.install.ps1 $args"
-    Invoke-Expression ".\collectm.remote.install.ps1 $args"
-}
