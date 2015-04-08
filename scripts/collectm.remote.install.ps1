@@ -69,25 +69,26 @@ $collectmDownloadScriptUrl = $collectMRepo + "/blob/" + $gitBranch + "/scripts/c
 
 $installerPath = "collectm.installer.exe"
 
-Write-Host "Downloading CollectM download script in url: $collectmDownloadScriptUrl"
+Write-Host "Fetching download script in url: ""$collectmDownloadScriptUrl"""
 
-downloadFile -url $collectmDownloadScriptUrl -filePath ".\collectm.download.ps1"
+downloadFile -url "$collectmDownloadScriptUrl" -filePath ".\collectm.download.ps1"
 
-Write-Host "Downloading CollectM installer in url: $collectmDownloadUrl"
+Write-Host "Downloading CollectM installer: .\collectm.download.ps1 -url ""$collectmDownloadUrl"" -filePath ""$installerPath"""
 
 Invoke-Expression ".\collectm.download.ps1 -url $collectmDownloadUrl -filePath $installerPath"
 
-Write-Host "Downloading CollectM deploy script in url: $collectmDeployScriptUrl"
+Write-Host "Downloading CollectM deploy script: .\collectm.download.ps1 -url ""$collectmDeployScriptUrl"" -filePath 'collectm.deploy.ps1'"
 
-Invoke-Expression ".\collectm.download.ps1 -url $collectmDeployScriptUrl -filePath 'collectm.deploy.ps1'"
+#Invoke-Expression ".\collectm.download.ps1 -url ""$collectmDeployScriptUrl"" -filePath 'collectm.deploy.ps1'"
 
-Write-Host "Downloading Collectm config script in url: $collectmConfigScriptUrl"
+Write-Host "Downloading Collectm config script: .\collectm.download.ps1 -url ""$collectmConfigScriptUrl"" -filePath 'collectm.config.ps1'"
 
-Invoke-Expression ".\collectm.download.ps1 -url $collectmConfigScriptUrl -filePath 'collectm.config.ps1'"
+#Invoke-Expression ".\collectm.download.ps1 -url ""$collectmConfigScriptUrl"" -filePath 'collectm.config.ps1'"
 
 if ($SetupConfigFile -eq $true) {
-    Write-Host "Running: .\collectm.deploy.ps1 -installerPath ""$installerPath"" -SetupConfigFile -configArgs $setupArgs"
-    Invoke-Expression ".\collectm.deploy.ps1 -installerPath ""$installerPath"" -SetupConfigFile -configArgs $setupArgs"
+    $temp = ".\collectm.deploy.ps1 -installerPath ""$installerPath"" -SetupConfigFile -configArgs '" + $setupArgs + "'"
+    Write-Host "Running: $temp"
+    Invoke-Expression "$temp"
 } else {
     Write-Host "Running: .\collectm.deploy.ps1 -installerPath ""$installerPath"""
     Invoke-Expression ".\collectm.deploy.ps1 -installerPath ""$installerPath"""
