@@ -11,7 +11,7 @@ Param(
 
     [Parameter(Mandatory=$false)]
     [ValidateNotNullOrEmpty()]
-	[string]$installerName="CollectM-1.5.0.install.exe",
+	[string]$installerName="CollectM-1.5.1.install.exe",
 
     [Parameter(Mandatory=$false)]
     [switch]$SetupConfigFile=$false,
