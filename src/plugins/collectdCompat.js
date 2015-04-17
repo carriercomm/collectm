@@ -342,7 +342,7 @@ exports.monitor = function () {
     launch_collector_df        (default_interval);
     launch_collector_disk      (default_interval);
     launch_collector_interface (default_interval);
-    launch_collector_load      (default_interval);
+    //launch_collector_load      (default_interval);
     launch_collector_uptime    (default_interval);
     launch_collector_process   (default_interval);
     launch_collector_swap      (default_interval);
