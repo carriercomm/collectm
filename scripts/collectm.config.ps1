@@ -102,7 +102,7 @@ foreach ($elem in $servers){
 }
 
 $configStr += "`n    ]`n  },`n"
-$configStr += "  ""Plugin"": {`n    ""collectdCompat"": {`n      ""enable"": 1`n    }`n  }`n"
+$configStr += "  ""Plugin"": {`n    ""collectdCompat"": {`n      ""enable"": 1`n    },`n	""load"": {`n	  ""enable"": 1`n	}`n  }`n"
 $configStr += "}"
 
 ## Output String to File and make sure that the file is UTF 8 w/o BOM ##
