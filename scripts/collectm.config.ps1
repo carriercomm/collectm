@@ -102,7 +102,10 @@ foreach ($elem in $servers){
 }
 
 $configStr += "`n    ]`n  },`n"
-$configStr += "  ""Plugin"": {`n    ""collectdCompat"": {`n      ""enable"": 1`n    }`n  }`n"
+$configStr += "  ""Plugin"": {`n    ""collectdCompat"": {`n      ""enable"": 1,`n	  ""modules"": {`n	  //modules are: load, disk, cpu, memory, uptime, df, interface, load, process, swap. set to 0 to deactivate, 1 or don't set at all to activate`n" +
+                "	    ""load"": 0,`n		""disk"": 0`n	  }`n    },`n	""load"": {`n	  ""enable"": 1`n	},`n	""disk"": {`n	  ""enable"": 1`n	  //you can also specify exactly which disk to monitor like this: ""disks"": [""C""]`n" +
+                "	},`n	""ping"": {`n	  ""enable"": 1`n	  //you can also specify which host to ping like this: ,""hosts"": [""www.google.com""]`n	}`n  }`n"
+
 $configStr += "}"
 
 ## Output String to File and make sure that the file is UTF 8 w/o BOM ##
