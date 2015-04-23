@@ -20,6 +20,8 @@ var counter_repo = {};
 
 var logger;
 
+var noCounterDataTries = 0;
+
 function getAvgLoad(num_of_turns, timeframe) {
     //division by zero === 'very bad idea'
     if (counter_repo.turns == 0) {
@@ -91,20 +93,30 @@ function getAvgLoad(num_of_turns, timeframe) {
 
 function getUnixLoad() {
     var plugin = collectdClient.plugin('load', '');
+    var emptyData = false;
     perfmon(avgLoadCounters, function (err, data) {
+        emptyData = false;
         for (var i = 0; i < avgLoadCounters.length; i++) {
-            if (typeof counter_repo.currentCounters[avgLoadCounters[i]] != 'undefined') {
-                counter_repo.currentCounters[avgLoadCounters[i]]["values"].push(data.counters[avgLoadCounters[i]]);
+            if (typeof data != 'undefined' && typeof data.counters != 'undefined' && typeof data.counters[avgLoadCounters[i]] != 'undefined') {
+                counter_repo.currentCounters[avgLoadCounters[i]]['values'].push(data.counters[avgLoadCounters[i]]);
             } else {
-                logger.info("Problem with counter: " + avgLoadCounters[i]);
-                counter_repo.currentCounters[avgLoadCounters[i]]["values"].push(0);
+                logger.info("No value for counter: " + avgLoadCounters[i] + " in load plugin.");
+                counter_repo.currentCounters[avgLoadCounters[i]]['values'].push(0);
+                emptyData = true;
             }
         }
+        noCounterDataTries = emptyData ? noCounterDataTries + 1 : 0;
         counter_repo.turns++;
         var shortterm = parseFloat(getAvgLoad(60, '1m').toFixed(2));
         var midterm = parseFloat(getAvgLoad(300, '5m').toFixed(2));
         var longterm = parseFloat(getAvgLoad(900, '15m').toFixed(2));
         plugin.setGauge('load', '', [shortterm, midterm, longterm]);
+        if (noCounterDataTries == 10) {
+            logger.info("After 10 failed attempts no data from perfmon. Restarting perfmon");
+            perfmon.stop();
+            noCounterDataTries = 0;
+            setTimeout(getUnixLoad, 1000);
+        }
     });
 }
 
@@ -116,6 +128,26 @@ function initializeCounterRepo() {
         counter_repo.currentCounters[avgLoadCounters[i]]["final_value"] = 0;
     }
     counter_repo.turns = 0;
+}
+
+function testing() {
+    var totalLoad = 0;
+    var totalProcesses = 0;
+    var actualTurns = counter_repo.turns < 60 ? counter_repo.turns : 60;
+    var valuesLength = counter_repo.currentCounters['\\processor(_total)\\% processor time'].values.length - 1;
+
+    for (var i=0 ; i<actualTurns ; i++) {
+        totalLoad += counter_repo.currentCounters['\\processor(_total)\\% processor time'].values[valuesLength - i];
+        totalProcesses += counter_repo.currentCounters['\\System\\Processor Queue Length'].values[valuesLength - i];
+    }
+
+    logger.info("Total load: " + totalLoad);
+    logger.info("Total processes: " + totalProcesses);
+    logger.info("Actual turns: " + actualTurns);
+    totalLoad = cpus * ((totalLoad / actualTurns) / 100);
+    totalProcesses = totalProcesses / actualTurns;
+
+    logger.info("Result: " + (totalLoad + totalProcesses));
 }
 
 exports.configShow = function () {
