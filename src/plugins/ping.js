@@ -8,7 +8,7 @@ var ping = new p.PingOutput();
 
 var hosts = [
     {
-        host: "www.bing.com"
+        host: "8.8.8.8"
     }
 ];
 
@@ -160,7 +160,8 @@ exports.reloadConfig = function (c) {
 
 exports.monitor = function () {
     var default_interval = cfg.interval || collectdClient.interval || 60000;
-    if (typeof cfg.hosts !== 'undefined') {
+    if (typeof cfg.hosts !== 'undefined' && cfg.hosts.length > 0) {
+		hosts = [];
         for (var i=0 ; i<cfg.hosts.length ; i++) {
             var newHost = {};
             newHost.host = cfg.hosts[i];
