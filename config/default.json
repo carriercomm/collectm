@@ -47,7 +47,15 @@
 
   "Plugin": {
     "collectdCompat": {
-	  "enable": 1
+	  "enable": 1,
+	  "modules": {
+// This is an example. You can select which of the modules of the collectdCompat plugin you want to be active.
+// Available modules are: load, disk, cpu, memory, uptime, df, interface, process, swap. 
+// Set to 0 to deactivate, 1 or don't set at all to activate.
+// If you want all to be active remove "modules" value completely.
+	    "load": 0,
+		"disk": 0
+	  }
 	},
     "sysconfig": {
 	  "enable": 1
@@ -84,6 +92,24 @@
             "commandline": ".*collectm.*nssm\\.exe.*"
         }
       }
-    }
+    },
+	"load": {
+	  "enable": 1
+	},
+	"disk": {
+	  "enable": 1,
+// This is an example.
+// Plugin can either autodiscover all the disks mounted on the system  
+// or point to a particular disk like below.
+// If set to autodiscover it will also find new disks that are mounted after starting the service.
+// If disk is no longer available no data will be sent.
+      "disks": ["D"]
+	},
+	"ping": {
+	  "enable": 1,
+// This is an example. If you want to change which url is pinged you can do so like shown below:
+//There is no limit to how many addresses can be pinged. They have to be all in an array.
+	  "hosts": ["www.google.com"]
+	}
   }
 }
